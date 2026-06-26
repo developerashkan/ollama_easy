@@ -1,0 +1,21 @@
+name: ollama_easy
+description: A Flutter-friendly Ollama client with one-line prompts, typed chat, streaming, embeddings, and model helpers.
+version: 0.1.0
+repository: https://github.com/developerashkan/ollama_easy
+issue_tracker: https://github.com/developerashkan/ollama_easy/issues
+topics:
+  - ollama
+  - flutter
+  - llm
+  - ai
+  - local-ai
+
+environment:
+  sdk: ^3.4.0
+
+dependencies:
+  http: ^1.2.0
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.25.0

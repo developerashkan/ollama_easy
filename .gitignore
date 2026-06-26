@@ -1,0 +1,7 @@
+.dart_tool/
+.localappdata/
+.appdata/
+.pub-cache/
+build/
+coverage/
+pubspec.lock
