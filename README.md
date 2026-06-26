@@ -1,13 +1,14 @@
 # ollama_easy
 
-A small Dart package for using Ollama from Flutter without hand-building HTTP
-requests or parsing newline-delimited JSON yourself.
+A small, Flutter-friendly client for Ollama. Use local AI models in your apps with one-line prompts, typed chat, streaming, and built-in support for Android emulators.
 
 ```dart
-final ollama = Ollama.local(defaultModel: 'gemma4');
+final ollama = Ollama.local(defaultModel: 'qwen2.5:1.5b');
 
+// Simple one-line prompt
 final answer = await ollama.ask('Explain Flutter isolates in one sentence.');
 
+// Real-time token streaming
 await for (final token in ollama.askStream('Write a tiny haiku.')) {
   stdout.write(token);
 }
@@ -15,52 +16,48 @@ await for (final token in ollama.askStream('Write a tiny haiku.')) {
 ollama.close();
 ```
 
-## Why this package?
+## Features
 
-- One-line prompts with `ask()`
-- Token streaming with `askStream()` and `chatTextStream()`
-- Typed chat messages with `OllamaMessage.user()`, `.system()`, and `.assistant()`
-- JSON helpers with `askJson()` for structured output
-- Embeddings, model listing, pull progress, version checks, and model existence checks
-- Works in Flutter and plain Dart because it only depends on `package:http`
-- Supports local Ollama and Ollama cloud API keys
+- **Multi-Platform**: Support for Windows, Web, Android, iOS, macOS, and Linux.
+- **Easy Streaming**: Built-in support for `Stream<String>` tokens.
+- **Android Emulator Support**: Easily switch to `10.0.2.2` for emulator testing.
+- **Typed Chat**: Structured messages with `system`, `user`, and `assistant` roles.
+- **JSON Mode**: Get structured output easily with `askJson()`.
+- **Model Helpers**: Pull, check, and list models with progress streams.
+- **CLI Tool**: Run prompts directly from your terminal.
 
 ## Install
 
 ```yaml
 dependencies:
-  ollama_easy: ^0.1.0
+  ollama_easy: ^0.2.0
 ```
 
-For local development before publishing:
+## Getting Started
 
-```yaml
-dependencies:
-  ollama_easy:
-    git:
-      url: https://github.com/developerashkan/ollama_easy.git
-```
+Ensure the Ollama server is running on your machine before executing your code.
 
-## Local Ollama
-
-Ollama serves its local API at `http://localhost:11434/api` after it is
-installed and running.
+### Local Ollama
 
 ```dart
-final ollama = Ollama.local(defaultModel: 'gemma4');
+final ollama = Ollama.local(defaultModel: 'qwen2.5:1.5b');
 
 if (!await ollama.isRunning()) {
   throw StateError('Start Ollama first.');
 }
-
-await ollama.ensureModel('gemma4');
-
-final text = await ollama.ask(
-  'Give me three short app ideas for Flutter and local AI.',
-);
 ```
 
-## Chat
+### Android Emulator
+
+When running in an Android emulator, `localhost` refers to the emulator itself. To reach the host machine where Ollama is running, use:
+
+```dart
+final ollama = Ollama(baseUrl: Uri.parse('http://10.0.2.2:11434'));
+```
+
+## Usage
+
+### Chat
 
 ```dart
 final reply = await ollama.chatText([
@@ -69,7 +66,7 @@ final reply = await ollama.chatText([
 ]);
 ```
 
-## Structured JSON
+### Structured JSON
 
 ```dart
 final json = await ollama.askJson(
@@ -79,53 +76,34 @@ final json = await ollama.askJson(
 print(json['title']);
 ```
 
-You can also pass a JSON schema object:
-
-```dart
-final recipe = await ollama.askJson(
-  'Create a simple tea recipe.',
-  schema: {
-    'type': 'object',
-    'properties': {
-      'title': {'type': 'string'},
-      'steps': {
-        'type': 'array',
-        'items': {'type': 'string'},
-      },
-    },
-    'required': ['title', 'steps'],
-  },
-);
-```
-
-## Embeddings
+### Embeddings
 
 ```dart
 final result = await ollama.embed(
   'Flutter makes beautiful apps.',
-  model: 'embeddinggemma',
+  model: 'qwen2.5:1.5b',
 );
 
 final vector = result.first;
 ```
 
-## Ollama cloud
+## CLI Tool
 
-```dart
-final ollama = Ollama.cloud(
-  apiKey: const String.fromEnvironment('OLLAMA_API_KEY'),
-);
+You can use `ollama_easy` directly from your terminal to test prompts:
 
-final answer = await ollama.ask('What changed in local AI recently?');
+```bash
+dart run bin/ollama_easy.dart "Tell me a joke"
 ```
 
-## Flutter notes
+## Flutter Web
 
-Mobile and desktop apps can usually reach a local Ollama server directly.
-Flutter Web may need Ollama CORS configuration, because browser requests are
-subject to the browser's security model.
+Flutter Web requires Ollama to have CORS configured. Start Ollama with the following environment variable:
 
-## API surface
+```bash
+OLLAMA_ORIGINS="*" ollama serve
+```
+
+## API Summary
 
 ```dart
 final ollama = Ollama();
@@ -136,7 +114,7 @@ ollama.askStream('...');
 await ollama.generate('...');
 ollama.generateStream('...');
 
-await ollama.chatText([const OllamaMessage.user('...')]);
+await ollama.chatText([...]);
 await ollama.chat([...]);
 ollama.chatTextStream([...]);
 ollama.chatStream([...]);
@@ -144,10 +122,10 @@ ollama.chatStream([...]);
 await ollama.askJson('...');
 await ollama.embed('...');
 await ollama.models();
-await ollama.hasModel('gemma4');
-await ollama.ensureModel('gemma4');
-await ollama.pull('gemma4');
-ollama.pullStream('gemma4');
+await ollama.hasModel('qwen2.5:1.5b');
+await ollama.ensureModel('qwen2.5:1.5b');
+await ollama.pull('qwen2.5:1.5b');
+ollama.pullStream('qwen2.5:1.5b');
 await ollama.version();
 await ollama.isRunning();
 

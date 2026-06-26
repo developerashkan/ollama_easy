@@ -12,13 +12,13 @@ void main() {
       expect(request.url.toString(), 'http://localhost:11434/api/generate');
 
       final body = jsonDecode(request.body) as Map<String, Object?>;
-      expect(body['model'], 'gemma4');
+      expect(body['model'], 'qwen2.5:1.5b');
       expect(body['prompt'], 'Hello');
       expect(body['stream'], isFalse);
 
       return http.Response(
         jsonEncode({
-          'model': 'gemma4',
+          'model': 'qwen2.5:1.5b',
           'created_at': '2026-06-25T00:00:00Z',
           'response': 'Hi there',
           'done': true,

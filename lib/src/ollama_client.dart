@@ -9,7 +9,7 @@ class Ollama {
   Ollama({
     Uri? baseUrl,
     String? apiKey,
-    this.defaultModel = 'gemma4',
+    this.defaultModel = 'qwen2.5:1.5b',
     http.Client? httpClient,
     Map<String, String>? headers,
   })  : baseUrl = baseUrl ?? Uri.parse('http://localhost:11434'),
@@ -22,7 +22,7 @@ class Ollama {
         };
 
   factory Ollama.local({
-    String defaultModel = 'gemma4',
+    String defaultModel = 'qwen2.5:1.5b',
     http.Client? httpClient,
   }) {
     return Ollama(defaultModel: defaultModel, httpClient: httpClient);
