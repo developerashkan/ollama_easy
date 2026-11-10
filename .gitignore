@@ -5,3 +5,6 @@
 build/
 coverage/
 pubspec.lock
+.idea/
+*.iml
+.vscode/

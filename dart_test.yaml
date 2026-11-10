@@ -1,0 +1,4 @@
+tags:
+  integration:
+    # Talks to a real Ollama server; skips itself when none is running.
+    timeout: 5m

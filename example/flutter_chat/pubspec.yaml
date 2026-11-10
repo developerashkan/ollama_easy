@@ -1,0 +1,22 @@
+name: ollama_chat_example
+description: A small streaming chat app built with ollama_easy.
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  ollama_easy:
+    path: ../../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  http: ^1.5.0
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
